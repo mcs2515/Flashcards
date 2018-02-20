@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Our simple HTTP server</title>
+  <link rel="stylesheet" type="text/css" href="/style.css">
+  <style>
+	
+		@import url('https://fonts.googleapis.com/css?family=Kanit:200|Ubuntu|Kalam');
+
+		html, body {
+			height: 100%;
+			width: 100%;
+			margin: 0;
+			padding: 0;
+			overflow: hidden;
+		}
+
+		h1 {
+			margin: 0;
+			padding: 20px 30px;
+			text-align: left;
+			font-size: 4em;
+			background-color: #4257b2;
+			font-family: 'Kalam', cursive;
+			color: #89f9ea;
+		}
+		
+		h3{
+			padding: 0;
+			margin-top: 0;
+			font-weight: bolder;
+		}
+
+		#content {
+			font-size: 1.5em;
+			text-align: center;
+			height: 95%;
+			background-color: #f0f0f0;
+			overflow: scroll;
+			overflow-x: hidden;
+		}
+		
+		#actionSection{
+			margin: 0;
+			margin-top: 10px;
+			padding: 0;
+			width: 400px;
+			height: 100%;
+			float: left;
+			color: #444;
+			font-family: 'Kanit', sans-serif;
+		}
+
+		#addSection{
+			padding: 40px 40px 50px 20px;
+		}
+
+		#searchSection{
+			padding: 40px 40px 40px 20px;
+		}
+		
+		#searchSection form{
+			text-align: center;
+		}
+		
+		#questionField{
+			width: 100%;
+			font-size:14pt; 
+			padding: 2px 3px;
+			margin: 8px 0;
+		}
+		
+		#answerField{
+			width: 100%;
+			font-size:14pt; 
+			padding: 2px 3px;
+			margin: 8px 0;
+			height: 30pt;
+		}
+		
+		#searchField, #topicField{
+			width: 100px;
+			padding-left: 5px;
+		}
+		
+		form{
+			padding: 10px;
+		}
+		
+		#card{
+			width: 500px;
+			height: 250px;
+			border-radius: 5px;
+			text-align: center;
+			margin: 0 auto;
+			margin-top: 40px;
+			display: flex;
+    	align-items: center;
+			font-family: 'Ubuntu', sans-serif;
+		}
+	
+		.front, .back{
+			width: 100%;
+			height: 100%;
+			background-color: white;
+			border-radius: 5px;
+
+		}
+	
+		.cardContent{
+			margin: 0;
+			padding: 0;
+			text-align: center;
+			margin-top: 20%
+		}
+		
+		label{
+			font-weight: bolder;
+		}
+		
+		p{
+			word-wrap: break-word;
+		}
+		
+		.topicId{
+			float: left;
+			vertical-align: top;
+			font-size: 12pt;
+			padding: 15px;
+		}
+		
+		hr{
+			width: 70%;
+			background-color: transparent;
+			border-top: 2px dashed #8c8b8b;
+		}
+		
+		#addButton{
+			width: 60pt;
+			height: 2.5em;
+			border-radius: 3pt;
+			font-family: 'Montserrat', sans-serif;
+			border: 0;
+			color: white;
+			background-color: #fa7a64;
+			float: right;
+			margin-right: -8px;
+		}
+		
+		#searchButton{
+			width: 60pt;
+			height: 2em;
+			border-radius: 3pt;
+			font-family: 'Montserrat', sans-serif;
+			border: 0;
+			color: white;
+			background-color: #fa7a64;
+		}
+		
+		select{
+			height: 2em;
+		}
+		
+	</style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
+	<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<!--	https://nnattawat.github.io/flip/-->
+	<script src="https://cdn.rawgit.com/nnattawat/flip/master/dist/jquery.flip.min.js"></script>
+	
+	<script>
+			$(document).ready(function() {
+					$("#card").flip({axis: 'y'});
+			});
+	</script>
+  <script type="text/babel">
+
+				const parseJSON = (xhr, content) =>{						
+					const obj = JSON.parse(xhr.response);
+
+					if(obj.message){
+						const p = document.createElement('p');
+						p.textContent = `Message: ${obj.message}`;
+						content.appendChild(p);
+					}
+
+					//if users in response, add to screen
+					if(obj.users) {
+						const userList = document.createElement('p');
+						userList.textContent = JSON.stringify(obj.users);
+						content.appendChild(userList);
+					}
+
+					console.dir(obj);
+				};
+
+				const handleResponse = (xhr, parseResponse) => {
+                  
+					const content = document.querySelector(`#content`);
+
+					let updated = false;
+					
+					switch(xhr.status){
+						case 200: //success
+							content.innerHTML = `<h1>Success</h1>`;
+							break;
+						case 201: //created
+							content.innerHTML = '<h1>Create</h1>';
+							break;
+						case 204: //updated
+							content.innerHTML = '<h1>Updated</h1>';
+							updated = true;
+							break;
+						case 400: //bad request
+							content.innerHTML = '<h1>Bad Request</h1>';
+							break;
+						default:
+							content.innerHTML = `<h1>Resource Not Found</h1>`;
+							break;
+					}
+					
+					if(parseResponse && !updated){
+						parseJSON(xhr, content);
+					}
+				};
+
+				const addUser = (e, nameForm) =>{
+					
+					//grab the forms action (url to go to)
+					//and method (HTTP method - POST in this case)
+					const nameAction = nameForm.getAttribute('action');
+					const nameMethod = nameForm.getAttribute('method');
+
+					//grab the form's name and age fields so we can check user input
+					const nameField = nameForm.querySelector('#nameField');
+					const ageField = nameForm.querySelector('#ageField');
+
+					const xhr = new XMLHttpRequest();
+
+					xhr.open(nameMethod, nameAction);
+					xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+					xhr.setRequestHeader('Accept', 'application/json');
+
+					//if get request or head request
+					if(nameMethod == 'post') {
+						//set onload to parse request and get json message
+						xhr.onload = () => handleResponse(xhr, true);
+					} else {
+						//set onload to check meta data and NOT message
+						//There are no body responses in a head request
+						xhr.onload = () => handleResponse(xhr, false);
+					}
+					
+					//build our x-www-form-urlencoded format
+					const formData = `name=${nameField.value}&age=${ageField.value}`;
+					
+					xhr.send(formData);
+                  
+					//cancel browser's default action
+					e.preventDefault();
+					//return false to prevent page redirection from a form
+					return false;
+				};
+				
+				
+				const requestUpdate = (e, userForm) =>{
+					
+					//grab the forms action and method
+					const urlField = userForm.querySelector('#urlField');
+					const methodSelect = userForm.querySelector('#methodSelect');
+					
+					const xhr = new XMLHttpRequest();
+					
+					xhr.open(methodSelect.value, urlField.value);
+
+					xhr.setRequestHeader('Accept', 'application/json');
+
+					//if get request or head request
+					if(methodSelect.value == 'get') {
+						//set onload to parse request and get json message
+						xhr.onload = () => handleResponse(xhr, true);
+					} else {
+						//set onload to check meta data and NOT message
+						//There are no body responses in a head request
+						xhr.onload = () => handleResponse(xhr, false);
+					}
+					
+					xhr.send();
+                  
+					//cancel browser's default action
+					e.preventDefault();
+					//return false to prevent page redirection from a form
+					return false;
+				};
+				
+				
+				const init = () => {
+					//grab form
+					const nameForm = document.querySelector('#nameForm');
+					const userForm = document.querySelector('#userForm');
+
+					nameForm.addEventListener('submit', (e) => {
+						addUser(e, nameForm);
+					});
+					
+					userForm.addEventListener('submit', (e) => {
+						requestUpdate(e, userForm);
+					});
+				};
+				window.onload = init;
+  </script>
+</head>
+	
+<body>
+	<h1>Flashcards</h1>
+	<section id= "actionSection">
+		
+		<section id= "addSection"> 
+			<h3>Add a Card:</h3>
+			<form id="addForm" action="/addCard" method="post">
+				<label for="topic">Topic: </label>
+				<select id='topicField'>
+					<option value='math'>Math</option>
+					<option value='english'>English</option>
+					<option value='history'>History</option>
+					<option value='science'>Science</option>
+					<option value='language'>Language</option>
+				</select>
+				<br> <br>
+				<label for="question">Question: </label>
+				<br>
+				<input id="questionField" type="text" name="question" /> 
+				<br>
+				<label for="answer">Answer: </label>
+				<br>
+				<input id="answerField" type="text" name="answer" min="0" max="1000"/> <br>
+				<input id= "addButton" type="submit" value="Add Card" />
+			</form>
+		</section>
+		<hr/>
+		<section id= "searchSection"> 
+			<h3>Search Cards By:</h3>
+			<form id="searchForm" action="/getCard" method="get">
+				<label for="search">Topic: </label>
+				<select id='searchField'>
+					<option value='all'>All</option>
+					<option value='math'>Math</option>
+					<option value='english'>English</option>
+					<option value='history'>History</option>
+					<option value='science'>Science</option>
+					<option value='language'>Language</option>
+				</select>
+				<input id= "searchButton" type="submit" value="Search" />
+			</form>
+		</section>
+	</section>
+  
+  <section id="content">
+		<div id="card"> 
+			
+			<div class="front"> 
+				<div class= "topicId">Topic: </div>
+				<div class="cardContent"> 
+					<p><strong>Q:</strong>question</p>
+				</div>
+			</div> 
+			<div class="back">
+				<div class= "topicId">Topic:</div>
+				<div class="cardContent">
+					<p><strong>A:</strong>anwer</p>
+				</div>
+			</div> 
+		</div>
+		
+				<div id="card"> 
+			<div class="front"> 
+				<div class= "topicId">Topic: </div>
+				<div class="cardContent"> 
+					<p><strong>Q:</strong>???????</p>
+				</div>
+			</div> 
+		</div>
+		
+		<div id="card"> 
+			<div class="front"> 
+				<div class= "topicId">Topic: </div>
+				<div class="cardContent"> 
+					<p><strong>Q:</strong>???????</p>
+				</div>
+			</div> 
+		</div>
+		
+		<div id="card"> 
+			<div class="front"> 
+				<div class= "topicId">Topic: </div>
+				<div class="cardContent"> 
+					<p><strong>Q:</strong>???????</p>
+				</div>
+			</div> 
+		</div>
+		
+		<div id="card"> 
+			<div class="front"> 
+				<div class= "topicId">Topic: </div>
+				<div class="cardContent"> 
+					<p><strong>Q:</strong>???????</p>
+				</div>
+			</div> 
+		</div>
+		
+						<div id="card"> 
+			<div class="front"> 
+				<div class= "topicId">Topic: </div>
+				<div class="cardContent"> 
+					<p><strong>Q:</strong>???????</p>
+				</div>
+			</div> 
+		</div>
+		
+						<div id="card"> 
+			<div class="front"> 
+				<div class= "topicId">Topic: </div>
+				<div class="cardContent"> 
+					<p><strong>Q:</strong>???????</p>
+				</div>
+			</div> 
+		</div>
+		
+		<div id="card"> 
+			<div class="front"> 
+				<div class= "topicId">Topic: </div>
+				<div class="cardContent"> 
+					<p><strong>Q:</strong>???????</p>
+				</div>
+			</div> 
+		</div>
+		
+		<div id="card"> 
+			<div class="front"> 
+				<div class= "topicId">Topic: </div>
+				<div class="cardContent"> 
+					<p><strong>Q:</strong>???????</p>
+				</div>
+			</div> 
+		</div>
+  </section>
+</body>
+</html>
