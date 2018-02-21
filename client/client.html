@@ -170,12 +170,15 @@
 	<script src="https://cdn.rawgit.com/nnattawat/flip/master/dist/jquery.flip.min.js"></script>
 	
 	<script>
-			$(document).ready(function() {
+			$(document.body).ready(function() {
 				//find all divs with an attribute name that starts with "card"
-				$("div[id^=card").flip({axis: 'y'});
+				$("div[id^=card-").flip({axis: 'y'});
 			});
 	</script>
   <script type="text/babel">
+
+let totalCards = 0;
+
 		const handleResponse = (xhr) => {
 
 			const content = document.querySelector(`#content`);
@@ -188,13 +191,13 @@
 					createCard(content, xhr);
 					break;
 				case 204: //updated
-					content.innerHTML = '<h1>Updated</h1>';
+					//content.innerHTML = '<h1>Updated</h1>';
 					break;
 				case 400: //bad request
-					content.innerHTML = '<h1>Bad Request</h1>';
+					//content.innerHTML = '<h1>Bad Request</h1>';
 					break;
 				default:
-					content.innerHTML = `<h1>Resource Not Found</h1>`;
+					//content.innerHTML = `<h1>Resource Not Found</h1>`;
 					break;
 			}
 		};
@@ -235,20 +238,25 @@
 		};
 
 
+		
+
 		const createCard = (content, xhr) =>{
 
 			const obj = JSON.parse(xhr.response);
 
 			if(Object.keys(obj.cards)){
 
+				totalCards++;
+				
 				var html= "";
 
 				//last card in object
 				var cardName= Object.keys(obj.cards)[Object.keys(obj.cards).length-1];
 				var card = obj.cards[cardName];
 				console.log(obj.cards);
+				//console.log(cardName);
 
-				createTemplate(4, cardName, card.question, card.answer);
+				createTemplate(totalCards, card.topic, card.question, card.answer);
 			}
 		};
 
@@ -331,6 +339,8 @@
 				
 
 			content.innerHTML +=html;
+			$("#card-"+ num).flip({axis: 'y'});
+			
 		}
 
 		const init = () => {
@@ -397,6 +407,7 @@
 	</section>
   
   <section id="content">
+<!--
 		<div class="card" id="card-1"> 
 			<div class="front"> 
 				<div class= "topicId">Topic: </div>
@@ -411,6 +422,7 @@
 				</div>
 			</div> 
 		</div>
+-->
 
   </section>
 </body>

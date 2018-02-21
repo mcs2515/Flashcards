@@ -55,17 +55,18 @@ const addCards = (request, response, body) => {
   //    status = 204;
   //  } else {
   // otherwise create an object with that topic
-  cards[body.topic] = {};
+  cards[body.question] = {};
   //  }
 
   // add or update fields for this topic
-  cards[body.topic].question = body.question;
-  cards[body.topic].answer = body.answer;
+	cards[body.question].topic = body.topic;
+  cards[body.question].question = body.question;
+  cards[body.question].answer = body.answer;
 
 
   if (status === 201) {
     responseJSON.message = 'Created Successfully';
-		responseJSON.cards = cards;
+		responseJSON.cards = cards; //send last card in list
 		
 		console.log(cards );
     // send 200 w/ object
