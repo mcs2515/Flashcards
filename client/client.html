@@ -178,7 +178,7 @@
 	<script>
 			$(document.body).ready(function() {
 				//find all divs with an attribute name that starts with "card"
-				$("div[id^=card-]").flip({axis: 'y'});
+				$("div[id^=card-]").flip();
 			});
 	</script>
   <script type="text/babel">
@@ -339,13 +339,14 @@
 			html+= "</div>";
 
 			html+= "</div>";
-				
-				
 
 			content.innerHTML +=html;
-			$("div[id^=card-]").flip({axis: 'y'});
-			$("div[id^=card-]").flip({axis: 'y'});
 			
+			$("div[id^=card-]").flip(); //apply flip animations
+			
+			//reset cards to question side
+			$("div[id^=card-]").trigger( "click" );
+			$("div[id^=card-]").trigger( "click" );
 		}
 
 		const init = () => {
