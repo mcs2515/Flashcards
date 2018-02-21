@@ -4,14 +4,14 @@ const cards = {};
 
 // function to respond with a json object
 // takes request, response, status code and object to send
-const respondJSON = (request, response, status, object) => {
+const respondJSON = (request, response, status, obj) => {
   const headers = {
     'Content-Type': 'application/json',
   };
 
   // send response with json object
   response.writeHead(status, headers);
-  response.write(JSON.stringify(object));
+  response.write(JSON.stringify(obj));
   response.end();
 };
 
@@ -65,6 +65,9 @@ const addCards = (request, response, body) => {
 
   if (status === 201) {
     responseJSON.message = 'Created Successfully';
+		responseJSON.cards = cards;
+		
+		console.log(cards );
     // send 200 w/ object
     return respondJSON(request, response, status, responseJSON);
   }

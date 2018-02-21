@@ -3,7 +3,6 @@
 <head>
   <title>Our simple HTTP server</title>
   <link rel="stylesheet" type="text/css" href="/style.css">
-<!--
   <style>
 	
 		@import url('https://fonts.googleapis.com/css?family=Kanit:200|Ubuntu|Kalam');
@@ -165,7 +164,6 @@
 		}
 		
 	</style>
--->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
 	<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 	<!--	https://nnattawat.github.io/flip/-->
@@ -241,14 +239,16 @@
 
 			const obj = JSON.parse(xhr.response);
 
-			if(Object.keys(obj)){
+			if(Object.keys(obj.cards)){
 
 				var html= "";
 
 				//last card in object
-				var card= Object.keys(obj)[Object.keys(obj).length-1];
+				var cardName= Object.keys(obj.cards)[Object.keys(obj.cards).length-1];
+				var card = obj.cards[cardName];
+				console.log(obj.cards);
 
-				createTemplate(4, card.topic, card.question, card.answer);
+				createTemplate(4, cardName, card.question, card.answer);
 			}
 		};
 
@@ -310,23 +310,25 @@
 			var html= "";
 
 			//do some concatenation
-			html+="<div class='card' id='card-'" + num + ">"; //card number
+			html+="<div class='card' id='card-" + num + "'>"; //card number
 
-			html+="<div class='front>";
-			html+="<div class= 'topicId' + id='"+topic +"'>Topic: "+ topic + "</div>"; //card topic
+			html+="<div class='front'>";
+			html+="<div class= 'topicId'>Topic: "+ topic + "</div>"; //card topic
 			html+="<div class='cardContent'>";
 			html+="<p><strong>Q:</strong>" + question + "</p>";
 			html+= "</div>";
 			html+= "</div>";
 
-			html+="<div class='back>";
-			html+="<div class= 'topicId' + id='"+topic +"'>Topic: "+ topic + "</div>"; //card topic
+			html+="<div class='back'>";
+			html+="<div class= 'topicId'>Topic: "+ topic + "</div>"; //card topic
 			html+="<div class='cardContent'>";
 			html+="<p><strong>A:</strong>" + answer + "</p>";
 			html+= "</div>";
 			html+= "</div>";
 
 			html+= "</div>";
+				
+				
 
 			content.innerHTML +=html;
 		}
@@ -395,7 +397,6 @@
 	</section>
   
   <section id="content">
-<!--
 		<div class="card" id="card-1"> 
 			<div class="front"> 
 				<div class= "topicId">Topic: </div>
@@ -410,7 +411,6 @@
 				</div>
 			</div> 
 		</div>
--->
 
   </section>
 </body>

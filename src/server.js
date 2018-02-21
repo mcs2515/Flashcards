@@ -34,7 +34,6 @@ const handlePost = (request, response, parsedUrl) => {
       // Parse the string into an object by field name
       const bodyParams = query.parse(bodyString);
 
-			console.log(bodyParams)
       // pass to our addUser function
       jsonHandler.addCards(request, response, bodyParams);
     });
