@@ -3,6 +3,7 @@
 <head>
   <title>Our simple HTTP server</title>
   <link rel="stylesheet" type="text/css" href="/style.css">
+<!--
   <style>
 	
 		@import url('https://fonts.googleapis.com/css?family=Kanit:200|Ubuntu|Kalam');
@@ -90,15 +91,19 @@
 		}
 		
 		.card{
-			width: 70%;
-			height: 60%;
+			width: 65%;
+			height: 55%;
 			border-radius: 5px;
 			text-align: center;
 			margin: 0 auto;
-			margin-top: 10%;
+			margin-top: 11%;
 			display: flex;
     	align-items: center;
 			font-family: 'Ubuntu', sans-serif;
+		}
+		
+		.card:last-child{
+			margin-bottom: 150pt;
 		}
 	
 		.front, .back{
@@ -113,7 +118,7 @@
 			margin: 0;
 			padding: 0;
 			text-align: center;
-			margin-top: 20%
+			margin-top: 150pt;
 		}
 		
 		label{
@@ -164,6 +169,7 @@
 		}
 		
 	</style>
+-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
 	<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 	<!--	https://nnattawat.github.io/flip/-->
@@ -172,12 +178,13 @@
 	<script>
 			$(document.body).ready(function() {
 				//find all divs with an attribute name that starts with "card"
-				$("div[id^=card-").flip({axis: 'y'});
+				$("div[id^=card-]").flip({axis: 'y'});
 			});
 	</script>
   <script type="text/babel">
 
-let totalCards = 0;
+		let totalCards = $('.card:visible').length;
+		console.log("total cards start: " + totalCards);
 
 		const handleResponse = (xhr) => {
 
@@ -320,14 +327,14 @@ let totalCards = 0;
 			html+="<div class='front'>";
 			html+="<div class= 'topicId'>Topic: "+ topic + "</div>"; //card topic
 			html+="<div class='cardContent'>";
-			html+="<p><strong>Q:</strong>" + question + "</p>";
+			html+="<p><strong>Q: </strong>" + question + "</p>";
 			html+= "</div>";
 			html+= "</div>";
 
 			html+="<div class='back'>";
 			html+="<div class= 'topicId'>Topic: "+ topic + "</div>"; //card topic
 			html+="<div class='cardContent'>";
-			html+="<p><strong>A:</strong>" + answer + "</p>";
+			html+="<p><strong>A: </strong>" + answer + "</p>";
 			html+= "</div>";
 			html+= "</div>";
 
@@ -336,7 +343,7 @@ let totalCards = 0;
 				
 
 			content.innerHTML +=html;
-			$("div[id^=card-").flip({axis: 'y'});
+			$("div[id^=card-]").flip({axis: 'y'});
 			
 		}
 
@@ -409,18 +416,17 @@ let totalCards = 0;
 			<div class="front"> 
 				<div class= "topicId">Topic: </div>
 				<div class="cardContent"> 
-					<p><strong>Q:</strong>question</p>
+					<p><strong>Q: </strong>question</p>
 				</div>
 			</div> 
 			<div class="back">
 				<div class= "topicId">Topic:</div>
 				<div class="cardContent">
-					<p><strong>A:</strong>anwer</p>
+					<p><strong>A: </strong>anwer</p>
 				</div>
 			</div> 
 		</div>
 -->
-
   </section>
 </body>
 </html>

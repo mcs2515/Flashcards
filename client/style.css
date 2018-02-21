@@ -83,15 +83,19 @@
 		}
 		
 		.card{
-			width: 70%;
-			height: 60%;
+			width: 65%;
+			height: 55%;
 			border-radius: 5px;
 			text-align: center;
 			margin: 0 auto;
-			margin-top: 10%;
+			margin-top: 11%;
 			display: flex;
     	align-items: center;
 			font-family: 'Ubuntu', sans-serif;
+		}
+		
+		.card:last-child{
+			margin-bottom: 150pt;
 		}
 	
 		.front, .back{
@@ -106,7 +110,7 @@
 			margin: 0;
 			padding: 0;
 			text-align: center;
-			margin-top: 20%
+			margin-top: 150pt;
 		}
 		
 		label{
