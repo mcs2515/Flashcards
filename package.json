@@ -8,9 +8,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+		"nodemon": "nodemon --watch ./src ./src/server.js",
 		"build": "babel ./client --out-file ./hosted/bundle.js",
 		"watch": "babel --watch ./client --out-file ./client --out-file ./hosted/bundle.js",
-		"nodemon": "nodemon --watch ./src ./src/server.js",
     "start": "node ./server/app.js",
     "pretest": "eslint ./server --fix",
     "test": "echo \"Tests Complete\""
