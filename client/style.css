@@ -1,4 +1,4 @@
-		@import url('https://fonts.googleapis.com/css?family=Kanit:200|Ubuntu|Kalam');
+@import url('https://fonts.googleapis.com/css?family=Kanit:200|Ubuntu|Kalam');
 
 		html, body {
 			height: 100%;
@@ -71,37 +71,24 @@
 			height: 30pt;
 		}
 		
-		#searchField, #topicField{
+		#subjectField, #topicField{
 			width: 100px;
 			padding-left: 5px;
+			font-family: 'Ubuntu', sans-serif;
+			font-size: 12pt;
 		}
 		
 		form{
 			padding: 10px;
 		}
 		
-/*gird-like verison*/
-/*
-		#card{
-			width: 500px;
-			height: 250px;
-			border-radius: 5px;
-			text-align: center;
-			margin: 20px;
-			display: inline-flex;
-    	align-items: center;
-			font-family: 'Ubuntu', sans-serif;
-		}
-*/
-
-/*vertically-aligned*/
-		#card{
-			width: 500px;
-			height: 250px;
+		.card{
+			width: 70%;
+			height: 60%;
 			border-radius: 5px;
 			text-align: center;
 			margin: 0 auto;
-			margin-top: 40px;
+			margin-top: 10%;
 			display: flex;
     	align-items: center;
 			font-family: 'Ubuntu', sans-serif;
@@ -145,7 +132,7 @@
 		
 		#addButton{
 			width: 60pt;
-			height: 2.5em;
+			height: 2.4em;
 			border-radius: 3pt;
 			font-family: 'Montserrat', sans-serif;
 			border: 0;
@@ -157,7 +144,7 @@
 		
 		#searchButton{
 			width: 60pt;
-			height: 2em;
+			height: 2.4em;
 			border-radius: 3pt;
 			font-family: 'Montserrat', sans-serif;
 			border: 0;

@@ -1,0 +1,30 @@
+{
+  "name": "Flashcards",
+  "version": "1.0.0",
+  "engines": {
+    "node": "v8.9.4",
+    "npm": "5.6.0"
+  },
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./src/server.js",
+    "pretest": "eslint ./src --fix",
+    "test": "echo \"Tests Complete\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mcs2515/Flashcards.git"
+  },
+  "author": "Megan Smith",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mcs2515/Flashcards/issues"
+  },
+  "homepage": "https://github.com/mcs2515/Flashcards#readme",
+  "devDependencies": {
+    "eslint": "^4.17.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.8.0"
+  }
+}
