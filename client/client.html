@@ -237,9 +237,6 @@ let totalCards = 0;
 			return false;
 		};
 
-
-		
-
 		const createCard = (content, xhr) =>{
 
 			const obj = JSON.parse(xhr.response);
@@ -339,7 +336,7 @@ let totalCards = 0;
 				
 
 			content.innerHTML +=html;
-			$("#card-"+ num).flip({axis: 'y'});
+			$("div[id^=card-").flip({axis: 'y'});
 			
 		}
 

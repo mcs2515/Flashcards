@@ -59,16 +59,16 @@ const addCards = (request, response, body) => {
   //  }
 
   // add or update fields for this topic
-	cards[body.question].topic = body.topic;
+  cards[body.question].topic = body.topic;
   cards[body.question].question = body.question;
   cards[body.question].answer = body.answer;
 
 
   if (status === 201) {
     responseJSON.message = 'Created Successfully';
-		responseJSON.cards = cards; //send last card in list
-		
-		console.log(cards );
+    responseJSON.cards = cards; // send last card in list
+
+    console.log(cards);
     // send 200 w/ object
     return respondJSON(request, response, status, responseJSON);
   }

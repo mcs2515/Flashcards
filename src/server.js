@@ -18,7 +18,7 @@ const handlePost = (request, response, parsedUrl) => {
       console.dir(err);
       response.statusCode = 400;
       response.end();
-			console.log("reached error")
+      console.log('reached error');
     });
 
     // add it to our byte array.
