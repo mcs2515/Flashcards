@@ -18,9 +18,13 @@ var handleResponse = function handleResponse(xhr) {
 			break;
 		case 204:
 			//updated
-			//content.innerHTML = '<h1>Updated</h1>';
+			//displayCards(content,xhr);
 			break;
 		case 400:
+			//bad request
+			//content.innerHTML = '<h1>Bad Request</h1>';
+			break;
+		case 404:
 			//bad request
 			//content.innerHTML = '<h1>Bad Request</h1>';
 			break;
@@ -74,12 +78,10 @@ var createCard = function createCard(content, xhr) {
 
 		totalCards++;
 
-		var html = "";
-
 		//last card in object
 		var cardName = Object.keys(obj.cards)[Object.keys(obj.cards).length - 1];
 		var card = obj.cards[cardName];
-		//console.log(obj.cards);
+		console.log(obj.cards);
 		//console.log(cardName);
 
 		createTemplate(totalCards, card.topic, card.question, card.answer);
@@ -104,6 +106,7 @@ var getCards = function getCards(e, searchForm) {
 		xhr.onload = function () {
 			return handleResponse(xhr);
 		};
+		console.log("sent get request");
 	}
 
 	//cancel browser's default action
@@ -115,8 +118,9 @@ var getCards = function getCards(e, searchForm) {
 var displayCards = function displayCards(content, xhr) {
 	var obj = JSON.parse(xhr.response);
 
-	//grab the form's name and age fields so we can check user input
 	var subjectField = addForm.querySelector('#subjectField');
+
+	console.log("reached");
 
 	if (obj.cards.length > 0) {
 		//if card obj list is not empty
@@ -131,11 +135,13 @@ var displayCards = function displayCards(content, xhr) {
 			//if topic is all
 			if (subjectField.value === 'All') {
 				createTemplate(i, card.topic, card.question, card.answer);
+				console.log("displaying only certain cards");
 			} else {
 				//if card topic matches with the search topic
 				if (obj[cards[i]].topic === subjectField.value) {
 					//send only the filtered topic
 					createTemplate(i, card.topic, card.question, card.answer);
+					console.log("displaying only certain cards");
 				}
 			}
 		}
@@ -184,6 +190,7 @@ var init = function init() {
 
 	searchForm.addEventListener('submit', function (e) {
 		getCards(e, searchForm);
+		console.log("search clicked");
 	});
 };
 

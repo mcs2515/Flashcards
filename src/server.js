@@ -47,8 +47,9 @@ const handleGet = (request, response, parsedUrl) => {
     htmlHandler.getIndex(request, response);
   } else if (parsedUrl.pathname === '/style.css') {
     htmlHandler.getCSS(request, response);
-  } else if (parsedUrl.pathname === '/searchCards') {
+  } else if (parsedUrl.pathname === '/getCards') {
     jsonHandler.getCards(request, response);
+		console.log("ahhhhhh");
   } else if (parsedUrl.pathname === '/bundle.js') {
     htmlHandler.getBundle(request, response);
   } else {
@@ -58,9 +59,9 @@ const handleGet = (request, response, parsedUrl) => {
 
 // handle HEAD requests
 const handleHead = (request, response, parsedUrl) => {
-  if (parsedUrl.pathname === '/getUsers') {
+  if (parsedUrl.pathname === '/getCards') {
     // if get users, send meta data back
-    jsonHandler.getUsersMeta(request, response);
+    jsonHandler.getCardsMeta(request, response);
   } else {
     // if not found send 404 without body
     jsonHandler.notFoundMeta(request, response);
@@ -76,6 +77,7 @@ const onRequest = (request, response) => {
   switch (request.method) {
     case 'GET':
       handleGet(request, response, parsedUrl);
+			console.log("ahh!");
       break;
     case 'HEAD':
       handleHead(request, response, parsedUrl);

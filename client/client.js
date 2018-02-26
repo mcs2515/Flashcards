@@ -15,9 +15,12 @@ const handleResponse = (xhr) => {
 			createCard(content, xhr);
 			break;
 		case 204: //updated
-			//content.innerHTML = '<h1>Updated</h1>';
+			//displayCards(content,xhr);
 			break;
 		case 400: //bad request
+			//content.innerHTML = '<h1>Bad Request</h1>';
+			break;
+		case 404: //bad request
 			//content.innerHTML = '<h1>Bad Request</h1>';
 			break;
 		default:
@@ -68,12 +71,10 @@ const createCard = (content, xhr) =>{
 
 		totalCards++;
 
-		var html= "";
-
 		//last card in object
 		var cardName= Object.keys(obj.cards)[Object.keys(obj.cards).length-1];
 		var card = obj.cards[cardName];
-		//console.log(obj.cards);
+		console.log(obj.cards);
 		//console.log(cardName);
 
 		createTemplate(totalCards, card.topic, card.question, card.answer);
@@ -96,6 +97,7 @@ const getCards = (e, searchForm) =>{
 	if(method == 'get') {
 		//set onload to parse request and get json message
 		xhr.onload = () => handleResponse(xhr);
+		console.log("sent get request");
 	}
 
 	//cancel browser's default action
@@ -107,8 +109,9 @@ const getCards = (e, searchForm) =>{
 const displayCards= (content,xhr) =>{
 	const obj = JSON.parse(xhr.response);
 
-	//grab the form's name and age fields so we can check user input
 	const subjectField = addForm.querySelector('#subjectField');
+	
+	console.log("reached");
 
 	if(obj.cards.length >0){ //if card obj list is not empty
 
@@ -122,12 +125,14 @@ const displayCards= (content,xhr) =>{
 			//if topic is all
 			if(subjectField.value === 'All'){
 						createTemplate(i, card.topic, card.question, card.answer);
+						console.log("displaying only certain cards");
 				}
 			else{
 					//if card topic matches with the search topic
 					if(obj[cards[i]].topic === subjectField.value){
 						//send only the filtered topic
 						createTemplate(i, card.topic, card.question, card.answer);
+						console.log("displaying only certain cards");
 					}
 			}
 		}
@@ -163,7 +168,7 @@ const createTemplate = (num,topic, question, answer) =>{
 	//reset cards to question side
 	$("div[id^=card-]").trigger( "click" );
 	$("div[id^=card-]").trigger( "click" );
-}
+};
 
 const init = () => {
 	//grab form
@@ -176,6 +181,7 @@ const init = () => {
 
 	searchForm.addEventListener('submit', (e) => {
 		getCards(e,searchForm);
+		console.log("search clicked")
 	});
 };
 

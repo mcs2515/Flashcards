@@ -26,6 +26,7 @@ const respondJSONMeta = (request, response, status) => {
 
 const getCards = (request, response) => {
   const responseJSON = { cards };
+	console.log("getting objects");
   // Send 200 w/ object
   respondJSON(request, response, 200, responseJSON);
 };
@@ -68,7 +69,7 @@ const addCards = (request, response, body) => {
     responseJSON.message = 'Created Successfully';
     responseJSON.cards = cards; // send last card in list
 
-    console.log(cards);
+    //console.log(cards);
     // send 200 w/ object
     return respondJSON(request, response, status, responseJSON);
   }
