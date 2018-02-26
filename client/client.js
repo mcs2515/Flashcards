@@ -99,7 +99,7 @@ const getCards = (e, searchForm) =>{
 		xhr.onload = () => handleResponse(xhr);
 	}
 
-    xhr.send();
+  xhr.send();
 	//cancel browser's default action
 	e.preventDefault();
 	//return false to prevent page redirection from a form
@@ -110,25 +110,27 @@ const displayCards= (content,xhr) =>{
 	
 	const obj = JSON.parse(xhr.response);
 
-	const subjectField = addForm.querySelector('#subjectField');
+	const subjectField = document.querySelector('#subjectField');
 
-	if(obj.cards.length >0){ //if card obj list is not empty
+	if(Object.keys(obj.cards)){ //if card obj list is not empty
 
+		var cardLength = Object.keys(obj.cards).length;
 		//clear content
 		content.innerHTML = "";
 
-		for(var i=0; i<obj.cards.length; i++){
+		for(var i=0; i<cardLength; i++){
 
-			var card = obj[cards[i]]; //get card object at index
+			var cardName= Object.keys(obj.cards)[i];
+			var card = obj.cards[cardName];
 
 			//if topic is all
-			if(subjectField.value === 'All'){
+			if(subjectField.value === 'all'){
 						createTemplate(i, card.topic, card.question, card.answer);
 						//console.log("displaying only certain cards");
 				}
 			else{
 					//if card topic matches with the search topic
-					if(obj[cards[i]].topic === subjectField.value){
+					if(card.topic === subjectField.value){
 						//send only the filtered topic
 						createTemplate(i, card.topic, card.question, card.answer);
 						//console.log("displaying only certain cards");
