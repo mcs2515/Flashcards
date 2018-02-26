@@ -26,7 +26,6 @@ const respondJSONMeta = (request, response, status) => {
 
 const getCards = (request, response) => {
   const responseJSON = { cards };
-	console.log("getting objects");
   // Send 200 w/ object
   respondJSON(request, response, 200, responseJSON);
 };

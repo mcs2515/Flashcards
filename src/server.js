@@ -77,7 +77,6 @@ const onRequest = (request, response) => {
   switch (request.method) {
     case 'GET':
       handleGet(request, response, parsedUrl);
-			console.log("ahh!");
       break;
     case 'HEAD':
       handleHead(request, response, parsedUrl);
@@ -94,4 +93,4 @@ const onRequest = (request, response) => {
 
 http.createServer(onRequest).listen(port);
 
-// console.log(`Listening on 127.0.0.1: ${port}`);
+console.log(`Listening on 127.0.0.1: ${port}`);

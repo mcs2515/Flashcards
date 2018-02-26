@@ -106,9 +106,9 @@ var getCards = function getCards(e, searchForm) {
 		xhr.onload = function () {
 			return handleResponse(xhr);
 		};
-		console.log("sent get request");
 	}
 
+	xhr.send();
 	//cancel browser's default action
 	e.preventDefault();
 	//return false to prevent page redirection from a form
@@ -116,11 +116,10 @@ var getCards = function getCards(e, searchForm) {
 };
 
 var displayCards = function displayCards(content, xhr) {
+
 	var obj = JSON.parse(xhr.response);
 
 	var subjectField = addForm.querySelector('#subjectField');
-
-	console.log("reached");
 
 	if (obj.cards.length > 0) {
 		//if card obj list is not empty
@@ -135,13 +134,13 @@ var displayCards = function displayCards(content, xhr) {
 			//if topic is all
 			if (subjectField.value === 'All') {
 				createTemplate(i, card.topic, card.question, card.answer);
-				console.log("displaying only certain cards");
+				//console.log("displaying only certain cards");
 			} else {
 				//if card topic matches with the search topic
 				if (obj[cards[i]].topic === subjectField.value) {
 					//send only the filtered topic
 					createTemplate(i, card.topic, card.question, card.answer);
-					console.log("displaying only certain cards");
+					//console.log("displaying only certain cards");
 				}
 			}
 		}
@@ -184,13 +183,17 @@ var init = function init() {
 	var addForm = document.querySelector('#addForm');
 	var searchForm = document.querySelector('#searchForm');
 
+	var questionField = document.querySelector('#questionField');
+	var answerField = document.querySelector('#answerField');
+
 	addForm.addEventListener('submit', function (e) {
 		addCard(e, addForm);
+		questionField.value = ''; //empty out field
+		answerField.value = ''; //empty out field
 	});
 
 	searchForm.addEventListener('submit', function (e) {
 		getCards(e, searchForm);
-		console.log("search clicked");
 	});
 };
 
