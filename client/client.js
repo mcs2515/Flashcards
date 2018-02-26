@@ -151,6 +151,7 @@ const createTemplate = (num,topic, question, answer) =>{
 	html+="<div class='cardContent'>";
 	html+="<p><strong>Q: </strong>" + question + "</p>";
 	html+= "</div>";
+	html+= "<button class='editButton'>Edit</button>";
 	html+= "</div>";
 
 	html+="<div class='back'>";
@@ -158,6 +159,7 @@ const createTemplate = (num,topic, question, answer) =>{
 	html+="<div class='cardContent'>";
 	html+="<p><strong>A: </strong>" + answer + "</p>";
 	html+= "</div>";
+	html+= "<button class='editButton'>Edit</button>";
 	html+= "</div>";
 
 	html+= "</div>";

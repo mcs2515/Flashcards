@@ -3,7 +3,8 @@
 <head>
   <title>Flipp'n Flashcards</title>
   <link rel="stylesheet" type="text/css" href="/style.css">
-	<!--
+	
+<!--
   <style>
 	
 		@import url('https://fonts.googleapis.com/css?family=Kanit:200|Ubuntu|Kalam');
@@ -111,7 +112,6 @@
 			height: 100%;
 			background-color: white;
 			border-radius: 5px;
-
 		}
 	
 		.cardContent{
@@ -133,7 +133,26 @@
 			float: left;
 			vertical-align: top;
 			font-size: 12pt;
-			padding: 15px;
+			padding: 25px;
+			color: #444;
+		}
+		
+		.editButton{
+			position: absolute;
+			vertical-align:text-top;
+			font-size: 12pt;
+			padding: 25px 25px;
+			border: none;
+			background: none;
+			font-family: 'Ubuntu', sans-serif;
+			color: #444;
+			bottom: 0; 
+			right: 0;
+		}
+		
+		.editButton:hover{
+			color: blue;
+			font-weight: bold;
 		}
 		
 		hr{
@@ -170,6 +189,7 @@
 		
 	</style>
 -->
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
 	<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 	<!--	https://nnattawat.github.io/flip/-->
@@ -237,12 +257,14 @@
 				<div class="cardContent"> 
 					<p><strong>Q: </strong>question</p>
 				</div>
+				<button class="editButton">Edit</button>
 			</div> 
 			<div class="back">
 				<div class= "topicId">Topic:</div>
 				<div class="cardContent">
 					<p><strong>A: </strong>anwer</p>
 				</div>
+				<button class="editButton">Edit</button>
 			</div> 
 		</div>
 -->
