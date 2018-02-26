@@ -27,7 +27,6 @@ const handleResponse = (xhr) => {
 };
 
 const addCard = (e, addForm) =>{
-
 	//grab the forms action (url to go to)
 	//and method (HTTP method - POST in this case)
 	const action = addForm.getAttribute('action');

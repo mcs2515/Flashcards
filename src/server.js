@@ -49,8 +49,8 @@ const handleGet = (request, response, parsedUrl) => {
     htmlHandler.getCSS(request, response);
   } else if (parsedUrl.pathname === '/searchCards') {
     jsonHandler.getCards(request, response);
-  } else if (parsedUrl.pathname === '/getBundle') {
-    htmlResponses.getBundle(request, response);
+  } else if (parsedUrl.pathname === '/bundle.js') {
+    htmlHandler.getBundle(request, response);
   } else {
     jsonHandler.notFound(request, response);
   }

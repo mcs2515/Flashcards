@@ -31,7 +31,6 @@ var handleResponse = function handleResponse(xhr) {
 };
 
 var addCard = function addCard(e, addForm) {
-
 	//grab the forms action (url to go to)
 	//and method (HTTP method - POST in this case)
 	var action = addForm.getAttribute('action');
