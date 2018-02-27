@@ -7,7 +7,7 @@ console.log("total cards start: " + totalCards);
 const handleResponse = (xhr) => {
 
 	const content = document.querySelector(`#content`);
-
+	
 	switch(xhr.status){
 		case 200: //success in getting
 			displayCards(content,xhr);
@@ -16,7 +16,8 @@ const handleResponse = (xhr) => {
 			createCard(content, xhr);
 			break;
 		case 204: //updated
-			updateCards(content,xhr);
+			//update the cards by simulating a click for the search button
+			$("#searchButton").trigger( "click" );
 			break;
 		case 400: //bad request
 			//content.innerHTML = '<h1>Bad Request</h1>';
@@ -54,7 +55,7 @@ const addCard = (e, addForm) =>{
 	} 
 
 	//build our x-www-form-urlencoded format
-	const formData = `topic=${topicField.value}&question=${questionField.value}&answer=${answerField.value}&num=${totalCards+1}`;
+	const formData = `topic=${topicField.value}&question=${questionField.value}&answer=${answerField.value}`;
 
 	xhr.send(formData);
 
@@ -78,7 +79,7 @@ const createCard = (content, xhr) =>{
 		console.log(obj.cards);
 		//console.log(cardName);
 
-		createTemplate(card.num, card.topic, card.question, card.answer);
+		createTemplate(totalCards, card.topic, card.question, card.answer);
 	}
 };
 
@@ -126,84 +127,66 @@ const displayCards= (content,xhr) =>{
 
 			//if topic is all
 			if(subjectField.value === 'all'){
-						createTemplate(card.num, card.topic, card.question, card.answer);
-						//console.log("displaying only certain cards");
-				}
+					createTemplate(i, card.topic, card.question, card.answer);
+					//console.log("displaying only certain cards");
+			}
 			else{
-					//if card topic matches with the search topic
-					if(card.topic === subjectField.value){
-						//send only the filtered topic
-						createTemplate(card.num, card.topic, card.question, card.answer);
-						//console.log("displaying only certain cards");
-					}
+				//if card topic matches with the search topic
+				if(card.topic === subjectField.value){
+					//send only the filtered topic
+					createTemplate(card.num, card.topic, card.question, card.answer);
+					//console.log("displaying only certain cards");
+				}
 			}
 		}
 	}
 };
 
-const requestEdit= (topic, question, answer, num) =>{
-	//edits cards
-	const xhr = new XMLHttpRequest();
 
-	xhr.open('post', '/editCard');
-	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-	xhr.setRequestHeader('Accept', 'application/json');
-
-	//set onload to parse request and get json message
-	xhr.onload = () => handleResponse(xhr);
-
-	//build our x-www-form-urlencoded format
-	const formData = `topic=${topic}&question=${question}&answer=${answer}$num=${num}`;
-
-	xhr.send(formData);
-
-
-	//return false to prevent page redirection from a form
-	return false;	
-};
-
-const updateCards =(content,xhr)=>{
-	const obj = JSON.parse(xhr.response);
-	
-	//grab the form's name and age fields so we can check user input
-	const topicField = addForm.querySelector('#topicField');
-	const questionField = addForm.querySelector('#questionField');
-	const answerField = addForm.querySelector('#answerField');
-
-
-	if(Object.keys(obj.cards)){ //if card obj list is not empty
-
-		var cardLength = Object.keys(obj.cards).length;
-
-		for(var i=0; i<cardLength; i++){
-
-		//last card in object
-		var cardName= Object.keys(obj.cards)[i];
-		var card = obj.cards[cardName];
-	
-			if(card.num === selectedCard){
-				if(card.topic == 'math'){
-					topicField.selectedIndex = 0;
-				}
-				else if(card.topic == 'english'){
-					topicField.selectedIndex = 1;
-				}
-				else if(card.topic == 'history'){
-					topicField.selectedIndex = 2;
-				}
-				else if(card.topic == 'science'){
-					topicField.selectedIndex = 3;
-				}
-				else if(card.topic == 'language'){
-					topicField.selectedIndex = 4;
-				}
-
-
-				questionField.value =card.question;
-				answerField.value = card.answer;
-			}
-		}
-	}
+//dead code
+const requestEdit= () =>{
+//	const obj = JSON.parse(xhr.response);
+//	
+//	//grab the form's name and age fields so we can check user input
+//	const topicField = addForm.querySelector('#topicField');
+//	const questionField = addForm.querySelector('#questionField');
+//	const answerField = addForm.querySelector('#answerField');
+//
+//
+//	if(Object.keys(obj.cards)){ //if card obj list is not empty
+//
+//		var cardLength = Object.keys(obj.cards).length;
+//
+//		for(var i=0; i<cardLength; i++){
+//
+//		//last card in object
+//		var cardName= Object.keys(obj.cards)[i];
+//		var card = obj.cards[cardName];
+//	
+//			if(card.num === selectedCard){
+//				if(card.topic == 'math'){
+//					topicField.selectedIndex = 0;
+//				}
+//				else if(card.topic == 'english'){
+//					topicField.selectedIndex = 1;
+//				}
+//				else if(card.topic == 'history'){
+//					topicField.selectedIndex = 2;
+//				}
+//				else if(card.topic == 'science'){
+//					topicField.selectedIndex = 3;
+//				}
+//				else if(card.topic == 'language'){
+//					topicField.selectedIndex = 4;
+//				}
+//
+//
+//				questionField.value =card.question;
+//				answerField.value = card.answer;
+//			}
+//		}
+//	}
+	console.log("edit clicked woot");
 };
 
 const createTemplate = (num,topic, question, answer) =>{
@@ -217,7 +200,6 @@ const createTemplate = (num,topic, question, answer) =>{
 	html+="<div class='cardContent'>";
 	html+="<p><strong>Q: </strong>" + question + "</p>";
 	html+= "</div>";
-	html+= "<button class='editButton' id=edit-"+ num + ">Edit</button>";
 	html+= "</div>";
 
 	html+="<div class='back'>";
@@ -225,6 +207,7 @@ const createTemplate = (num,topic, question, answer) =>{
 	html+="<div class='cardContent'>";
 	html+="<p><strong>A: </strong>" + answer + "</p>";
 	html+= "</div>";
+	html+= "<button class='editButton'>Edit</button>";
 	html+= "</div>";
 
 	html+= "</div>";
@@ -237,9 +220,8 @@ const createTemplate = (num,topic, question, answer) =>{
 	$("div[id^=card-]").trigger( "click" );
 	$("div[id^=card-]").trigger( "click" );
 	
-	$( "button[id^=edit-]" ).click(function() {
-		requestEdit(topic, question, answer, num);
-		selectedCard = num;
+	$(".editButton").click(function() {
+		requestEdit();
 	});
 };
 

@@ -61,7 +61,6 @@ const addCards = (request, response, body) => {
 
   // add or update fields for this topic
   cards[body.question].topic = body.topic;
-	cards[body.question].num = body.num;
   cards[body.question].question = body.question;
   cards[body.question].answer = body.answer;
 
@@ -75,6 +74,7 @@ const addCards = (request, response, body) => {
     return respondJSON(request, response, status, responseJSON);
   }
 
+	console.log(cards);
   // Send 204 w/o object
   return respondJSONMeta(request, response, status);
 };

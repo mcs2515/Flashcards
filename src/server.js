@@ -49,7 +49,6 @@ const handleGet = (request, response, parsedUrl) => {
     htmlHandler.getCSS(request, response);
   } else if (parsedUrl.pathname === '/getCards') {
     jsonHandler.getCards(request, response);
-		console.log("ahhhhhh");
   } else if (parsedUrl.pathname === '/bundle.js') {
     htmlHandler.getBundle(request, response);
   } else {
