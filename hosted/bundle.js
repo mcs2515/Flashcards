@@ -1,6 +1,7 @@
 "use strict";
 
 var totalCards = $('.card:visible').length;
+var selectedCard = void 0;
 console.log("total cards start: " + totalCards);
 
 var handleResponse = function handleResponse(xhr) {
@@ -13,12 +14,12 @@ var handleResponse = function handleResponse(xhr) {
 			displayCards(content, xhr);
 			break;
 		case 201:
-			//sucess in creating
+			//success in creating
 			createCard(content, xhr);
 			break;
 		case 204:
 			//updated
-			//displayCards(content,xhr);
+			updateCards(content, xhr);
 			break;
 		case 400:
 			//bad request
@@ -60,7 +61,7 @@ var addCard = function addCard(e, addForm) {
 	}
 
 	//build our x-www-form-urlencoded format
-	var formData = "topic=" + topicField.value + "&question=" + questionField.value + "&answer=" + answerField.value;
+	var formData = "topic=" + topicField.value + "&question=" + questionField.value + "&answer=" + answerField.value + "&num=" + (totalCards + 1);
 
 	xhr.send(formData);
 
@@ -84,7 +85,7 @@ var createCard = function createCard(content, xhr) {
 		console.log(obj.cards);
 		//console.log(cardName);
 
-		createTemplate(totalCards, card.topic, card.question, card.answer);
+		createTemplate(card.num, card.topic, card.question, card.answer);
 	}
 };
 
@@ -135,15 +136,76 @@ var displayCards = function displayCards(content, xhr) {
 
 			//if topic is all
 			if (subjectField.value === 'all') {
-				createTemplate(i, card.topic, card.question, card.answer);
+				createTemplate(card.num, card.topic, card.question, card.answer);
 				//console.log("displaying only certain cards");
 			} else {
 				//if card topic matches with the search topic
 				if (card.topic === subjectField.value) {
 					//send only the filtered topic
-					createTemplate(i, card.topic, card.question, card.answer);
+					createTemplate(card.num, card.topic, card.question, card.answer);
 					//console.log("displaying only certain cards");
 				}
+			}
+		}
+	}
+};
+
+var requestEdit = function requestEdit(topic, question, answer, num) {
+	//edits cards
+	var xhr = new XMLHttpRequest();
+
+	xhr.open('post', '/editCard');
+	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	xhr.setRequestHeader('Accept', 'application/json');
+
+	//set onload to parse request and get json message
+	xhr.onload = function () {
+		return handleResponse(xhr);
+	};
+
+	//build our x-www-form-urlencoded format
+	var formData = "topic=" + topic + "&question=" + question + "&answer=" + answer + "$num=" + num;
+
+	xhr.send(formData);
+
+	//return false to prevent page redirection from a form
+	return false;
+};
+
+var updateCards = function updateCards(content, xhr) {
+	var obj = JSON.parse(xhr.response);
+
+	//grab the form's name and age fields so we can check user input
+	var topicField = addForm.querySelector('#topicField');
+	var questionField = addForm.querySelector('#questionField');
+	var answerField = addForm.querySelector('#answerField');
+
+	if (Object.keys(obj.cards)) {
+		//if card obj list is not empty
+
+		var cardLength = Object.keys(obj.cards).length;
+
+		for (var i = 0; i < cardLength; i++) {
+
+			//last card in object
+			var cardName = Object.keys(obj.cards)[i];
+			var card = obj.cards[cardName];
+
+			if (card.num === selectedCard) {
+				if (card.topic == 'math') {
+					topicField.selectedIndex = 0;
+				} else if (card.topic == 'english') {
+					topicField.selectedIndex = 1;
+				} else if (card.topic == 'history') {
+					topicField.selectedIndex = 2;
+				} else if (card.topic == 'science') {
+					topicField.selectedIndex = 3;
+				} else if (card.topic == 'language') {
+					topicField.selectedIndex = 4;
+				}
+
+				questionField.value = card.question;
+				answerField.value = card.answer;
 			}
 		}
 	}
@@ -160,7 +222,7 @@ var createTemplate = function createTemplate(num, topic, question, answer) {
 	html += "<div class='cardContent'>";
 	html += "<p><strong>Q: </strong>" + question + "</p>";
 	html += "</div>";
-	html += "<button class='editButton'>Edit</button>";
+	html += "<button class='editButton' id=edit-" + num + ">Edit</button>";
 	html += "</div>";
 
 	html += "<div class='back'>";
@@ -168,7 +230,6 @@ var createTemplate = function createTemplate(num, topic, question, answer) {
 	html += "<div class='cardContent'>";
 	html += "<p><strong>A: </strong>" + answer + "</p>";
 	html += "</div>";
-	html += "<button class='editButton'>Edit</button>";
 	html += "</div>";
 
 	html += "</div>";
@@ -180,6 +241,11 @@ var createTemplate = function createTemplate(num, topic, question, answer) {
 	//reset cards to question side
 	$("div[id^=card-]").trigger("click");
 	$("div[id^=card-]").trigger("click");
+
+	$("button[id^=edit-]").click(function () {
+		requestEdit(topic, question, answer, num);
+		selectedCard = num;
+	});
 };
 
 var init = function init() {

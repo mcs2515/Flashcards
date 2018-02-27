@@ -147,6 +147,10 @@
 			font-weight: bold;
 		}
 
+		.editButton:focus {
+			outline:0 !important;
+		}
+
 		hr{
 			width: 70%;
 			background-color: transparent;

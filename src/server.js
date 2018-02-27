@@ -9,7 +9,7 @@ const port = process.env.PORT || process.env.NODE_PORT || 3000;
 // handle POST requests
 const handlePost = (request, response, parsedUrl) => {
   // if post is to /addUser
-  if (parsedUrl.pathname === '/addCard') {
+  if (parsedUrl.pathname === '/addCard' || parsedUrl.pathname === '/editCard') {
     // byte array
     const body = [];
 
