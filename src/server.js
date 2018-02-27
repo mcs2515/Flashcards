@@ -9,7 +9,7 @@ const port = process.env.PORT || process.env.NODE_PORT || 3000;
 // handle POST requests
 const handlePost = (request, response, parsedUrl) => {
   // if post is to /addUser
-  if (parsedUrl.pathname === '/addCard') {
+  if (parsedUrl.pathname === '/addCard' || parsedUrl.pathname === '/editCard') {
     // byte array
     const body = [];
 
@@ -47,8 +47,12 @@ const handleGet = (request, response, parsedUrl) => {
     htmlHandler.getIndex(request, response);
   } else if (parsedUrl.pathname === '/style.css') {
     htmlHandler.getCSS(request, response);
-  } else if (parsedUrl.pathname === '/searchCards') {
+	} else if (parsedUrl.pathname === '/helptip.css') {
+    htmlHandler.getHelpTip(request, response);
+  } else if (parsedUrl.pathname === '/getCards') {
     jsonHandler.getCards(request, response);
+  } else if (parsedUrl.pathname === '/bundle.js') {
+    htmlHandler.getBundle(request, response);
   } else {
     jsonHandler.notFound(request, response);
   }
@@ -56,9 +60,9 @@ const handleGet = (request, response, parsedUrl) => {
 
 // handle HEAD requests
 const handleHead = (request, response, parsedUrl) => {
-  if (parsedUrl.pathname === '/getUsers') {
+  if (parsedUrl.pathname === '/getCards') {
     // if get users, send meta data back
-    jsonHandler.getUsersMeta(request, response);
+    jsonHandler.getCardsMeta(request, response);
   } else {
     // if not found send 404 without body
     jsonHandler.notFoundMeta(request, response);
@@ -90,4 +94,4 @@ const onRequest = (request, response) => {
 
 http.createServer(onRequest).listen(port);
 
-// console.log(`Listening on 127.0.0.1: ${port}`);
+console.log(`Listening on 127.0.0.1: ${port}`);

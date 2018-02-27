@@ -36,7 +36,7 @@ const getCardsMeta = (request, response) => {
 };
 
 const addCards = (request, response, body) => {
-  const status = 201;
+  let status = 201;
 
   // default json message
   const responseJSON = {
@@ -50,13 +50,14 @@ const addCards = (request, response, body) => {
   }
 
   // then switch to a 204 updated status
-  //  if (cards[body.topic].name) {
-  //    // if user already exist, then switch to a 204 updated status
-  //    status = 204;
-  //  } else {
-  // otherwise create an object with that topic
-  cards[body.question] = {};
-  //  }
+	// if question already exist, then switch to a 204 updated status
+	if(cards[body.question]){
+			status = 204;
+	}
+ 	else {
+  	// otherwise create an object with that topic
+  	cards[body.question] = {};
+   }
 
   // add or update fields for this topic
   cards[body.question].topic = body.topic;
@@ -68,11 +69,12 @@ const addCards = (request, response, body) => {
     responseJSON.message = 'Created Successfully';
     responseJSON.cards = cards; // send last card in list
 
-    console.log(cards);
+    //console.log(cards);
     // send 200 w/ object
     return respondJSON(request, response, status, responseJSON);
   }
 
+	console.log(cards);
   // Send 204 w/o object
   return respondJSONMeta(request, response, status);
 };
