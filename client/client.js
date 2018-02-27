@@ -206,12 +206,12 @@ const init = () => {
 	
 	$("#searching").on('click', function(e){ 
 		$('#searching').fadeIn(1000);
-		$('#searching').fadeOut(3000);
+		$('#searching').fadeOut(2000);
 	});
 	
 	$("#status").on('click',function(e){ 
 		$('#status').fadeIn(1000);
-		$('#status').fadeOut(3000);
+		$('#status').fadeOut(2000);
 	});
 
 	addForm.addEventListener('submit', (e) => {
@@ -219,7 +219,7 @@ const init = () => {
 		questionField.value=''; //empty out field
 		answerField.value='';	//empty out field
 		
-		document.getElementById("status").innerText = "Card added";
+		document.getElementById("status").innerText = "";
 		$("#status").trigger('click');
 	});
 
