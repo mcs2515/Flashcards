@@ -47,6 +47,8 @@ const handleGet = (request, response, parsedUrl) => {
     htmlHandler.getIndex(request, response);
   } else if (parsedUrl.pathname === '/style.css') {
     htmlHandler.getCSS(request, response);
+	} else if (parsedUrl.pathname === '/helptip.css') {
+    htmlHandler.getHelpTip(request, response);
   } else if (parsedUrl.pathname === '/getCards') {
     jsonHandler.getCards(request, response);
   } else if (parsedUrl.pathname === '/bundle.js') {

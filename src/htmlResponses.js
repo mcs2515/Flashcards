@@ -5,6 +5,7 @@ const fs = require('fs');
 // variables
 const index = fs.readFileSync(`${__dirname}/../hosted/client.html`);
 const css = fs.readFileSync(`${__dirname}/../hosted/style.css`);
+const helptip = fs.readFileSync(`${__dirname}/../hosted/helptip.css`);
 
 //added script to pull in our js bundle. This script is generated
 //by our babel build/watch scripts in our package.json
@@ -23,6 +24,12 @@ const getCSS = (request, response) => {
   response.end();
 };
 
+const getHelpTip = (request, response) => {
+  response.writeHead(200, { 'Content-Type': 'text/css' });
+  response.write(helptip);
+  response.end();
+};
+
 //function to get our js file in our hosted folder.
 const getBundle = (request, response) => {
   response.writeHead(200, { 'Content-Type': 'application/javascript' });
@@ -34,5 +41,6 @@ const getBundle = (request, response) => {
 module.exports = {
   getIndex,
   getCSS,
+	getHelpTip,
 	getBundle,
 };
