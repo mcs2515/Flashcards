@@ -125,7 +125,7 @@
 			float: left;
 			vertical-align: top;
 			font-size: 12pt;
-			padding: 15px;
+			padding: 25px;
 			color: #444;
 		}
 		
@@ -157,7 +157,30 @@
 			border-top: 2px dashed #8c8b8b;
 		}
 		
-		#addButton{
+		#status{
+			display:none;
+			margin: 5px;
+			float: left;
+			text-align: center;
+			font-size: 12pt;
+			border: none;
+			background-color: transparent;
+			color: #444;
+			font-family: 'Kanit', sans-serif;
+		}
+		
+		#searching{
+			display:none;
+			margin: 20px 5px;
+			text-align: center;
+			font-size: 12pt;
+			border: none;
+			background-color: transparent;
+			color: #444;
+			font-family: 'Kanit', sans-serif;
+		}
+
+		#submitButton{
 			width: 60pt;
 			height: 2.4em;
 			border-radius: 3pt;

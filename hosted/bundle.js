@@ -1,12 +1,12 @@
 "use strict";
 
-var totalCards = $('.card:visible').length;
-var selectedCard = void 0;
+var totalCards = 0;
 console.log("total cards start: " + totalCards);
 
 var handleResponse = function handleResponse(xhr, parseResponse) {
 
 	var content = document.querySelector("#content");
+	var status = document.getElementById("status");
 
 	switch (xhr.status) {
 		case 200:
@@ -20,11 +20,13 @@ var handleResponse = function handleResponse(xhr, parseResponse) {
 			if (parseResponse) {
 				createCard(content, xhr);
 			}
+			status.innerText = "Card added";
 			break;
 		case 204:
 			//updated
 			//update the cards by simulating a click for the search button
-			$("#searchButton").trigger("click");
+			$("#searchButton").trigger('click');
+			status.innerText = "Card edited";
 			break;
 		case 400:
 			//bad request
@@ -165,50 +167,9 @@ var displayCards = function displayCards(content, xhr) {
 };
 
 //dead code
-var requestEdit = function requestEdit() {
-	//	const obj = JSON.parse(xhr.response);
-	//	
-	//	//grab the form's name and age fields so we can check user input
-	//	const topicField = addForm.querySelector('#topicField');
-	//	const questionField = addForm.querySelector('#questionField');
-	//	const answerField = addForm.querySelector('#answerField');
-	//
-	//
-	//	if(Object.keys(obj.cards)){ //if card obj list is not empty
-	//
-	//		var cardLength = Object.keys(obj.cards).length;
-	//
-	//		for(var i=0; i<cardLength; i++){
-	//
-	//		//last card in object
-	//		var cardName= Object.keys(obj.cards)[i];
-	//		var card = obj.cards[cardName];
-	//	
-	//			if(card.num === selectedCard){
-	//				if(card.topic == 'math'){
-	//					topicField.selectedIndex = 0;
-	//				}
-	//				else if(card.topic == 'english'){
-	//					topicField.selectedIndex = 1;
-	//				}
-	//				else if(card.topic == 'history'){
-	//					topicField.selectedIndex = 2;
-	//				}
-	//				else if(card.topic == 'science'){
-	//					topicField.selectedIndex = 3;
-	//				}
-	//				else if(card.topic == 'language'){
-	//					topicField.selectedIndex = 4;
-	//				}
-	//
-	//
-	//				questionField.value =card.question;
-	//				answerField.value = card.answer;
-	//			}
-	//		}
-	//	}
-	console.log("edit clicked");
-};
+//const requestEdit= () =>{
+//	console.log("edit clicked");
+//};
 
 var createTemplate = function createTemplate(num, topic, question, answer) {
 	var html = "";
@@ -228,7 +189,7 @@ var createTemplate = function createTemplate(num, topic, question, answer) {
 	html += "<div class='cardContent'>";
 	html += "<p><strong>A: </strong>" + answer + "</p>";
 	html += "</div>";
-	html += "<button class='editButton'>Edit</button>";
+	//html+= "<button class='editButton'>Edit</button>";
 	html += "</div>";
 
 	html += "</div>";
@@ -241,9 +202,9 @@ var createTemplate = function createTemplate(num, topic, question, answer) {
 	$("div[id^=card-]").trigger("click");
 	$("div[id^=card-]").trigger("click");
 
-	$(".editButton").click(function () {
-		requestEdit();
-	});
+	//	$(".editButton").click(function() {
+	//		requestEdit();
+	//	});
 };
 
 var init = function init() {
@@ -254,14 +215,29 @@ var init = function init() {
 	var questionField = document.querySelector('#questionField');
 	var answerField = document.querySelector('#answerField');
 
+	$("#searching").on('click', function (e) {
+		$('#searching').fadeIn(1000);
+		$('#searching').fadeOut(3000);
+	});
+
+	$("#status").on('click', function (e) {
+		$('#status').fadeIn(1000);
+		$('#status').fadeOut(3000);
+	});
+
 	addForm.addEventListener('submit', function (e) {
 		addCard(e, addForm);
 		questionField.value = ''; //empty out field
 		answerField.value = ''; //empty out field
+
+		document.getElementById("status").innerText = "Card added";
+		$("#status").trigger('click');
 	});
 
 	searchForm.addEventListener('submit', function (e) {
+
 		getCards(e, searchForm);
+		$("#searching").trigger('click');
 	});
 };
 

@@ -5,8 +5,9 @@
   <link rel="stylesheet" type="text/css" href="/style.css">
   <link rel="stylesheet" type="text/css" href="/helptip.css">
 	
-  <!--<style>
-	
+<!--
+  <style>
+		
 		@import url('https://fonts.googleapis.com/css?family=Kanit:200|Ubuntu|Kalam');
 
 		html, body {
@@ -32,7 +33,7 @@
 			margin-top: 0;
 			font-weight: bolder;
 		}
-		
+
 		#content {
 			font-size: 1.5em;
 			text-align: center;
@@ -112,6 +113,7 @@
 			height: 100%;
 			background-color: white;
 			border-radius: 5px;
+
 		}
 	
 		.cardContent{
@@ -154,14 +156,41 @@
 			color: blue;
 			font-weight: bold;
 		}
-		
+
+		.editButton:focus {
+			outline:0 !important;
+		}
+
 		hr{
 			width: 70%;
 			background-color: transparent;
 			border-top: 2px dashed #8c8b8b;
 		}
 		
-		#addButton{
+		#status{
+			display:none;
+			margin: 5px;
+			float: left;
+			text-align: center;
+			font-size: 12pt;
+			border: none;
+			background-color: transparent;
+			color: #444;
+			font-family: 'Kanit', sans-serif;
+		}
+		
+		#searching{
+			display:none;
+			margin: 20px 5px;
+			text-align: center;
+			font-size: 12pt;
+			border: none;
+			background-color: transparent;
+			color: #444;
+			font-family: 'Kanit', sans-serif;
+		}
+
+		#submitButton{
 			width: 60pt;
 			height: 2.4em;
 			border-radius: 3pt;
@@ -186,91 +215,8 @@
 		select{
 			height: 2em;
 		}
-		
-		.help-tip{
-			position: absolute;
-			top: 195px;
-			left: 350px;
-			text-align: center;
-			background-color: #BCDBEA;
-			border-radius: 50%;
-			width: 24px;
-			height: 24px;
-			font-size: 14px;
-			line-height: 26px;
-			cursor: default;
-		}
-
-		.help-tip:before{
-				content:'?';
-				font-weight: bold;
-				color:#fff;
-		}
-
-		.help-tip:hover p{
-				display:block;
-				transform-origin: 100% 0%;
-
-				-webkit-animation: fadeIn 0.3s ease-in-out;
-				animation: fadeIn 0.3s ease-in-out;
-
-		}
-
-		.help-tip p{    /* The tooltip */
-			display: none;
-			text-align: left;
-			background-color: #1E2021;
-			padding: 20px;
-			width: 300px;
-			position: absolute;
-			border-radius: 3px;
-			box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
-			right: -4px;
-			color: #FFF;
-			font-size: 13px;
-			line-height: 1.4;
-			font-family: 'Montserrat', sans-serif;
-		}
-
-		.help-tip p:before{ /* The pointer of the tooltip */
-				position: absolute;
-				content: '';
-				width:0;
-				height: 0;
-				border:6px solid transparent;
-				border-bottom-color:#1E2021;
-				right:10px;
-				top:-12px;
-		}
-
-		.help-tip p:after{ /* Prevents the tooltip from being hidden */
-				width:100%;
-				height:40px;
-				content:'';
-				position: absolute;
-				top:-40px;
-				left:0;
-		}
-
-		/* CSS animation */
-
-		@-webkit-keyframes fadeIn {
-				0% { 
-						opacity:0; 
-						transform: scale(0.6);
-				}
-
-				100% {
-						opacity:100%;
-						transform: scale(1);
-				}
-		}
-
-		@keyframes fadeIn {
-				0% { opacity:0; }
-				100% { opacity:100%; }
-		}
-	</style>-->
+	</style>
+-->
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
 	<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
@@ -313,8 +259,9 @@
 				<br>
 				<label for="answer">Answer: </label>
 				<br>
-				<input id="answerField" type="text" name="answer" min="0" max="1000"/> <br>
-				<input id= "addButton" type="submit" value="Add Card" />
+				<input id="answerField" type="text" name="answer"/> <br>
+				<button id='status'>Status</button>
+				<input id= "submitButton" type="submit" value="Submit" />
 			</form>
 		</section>
 		<hr/>
@@ -331,13 +278,13 @@
 					<option value='language'>Language</option>
 				</select>
 				<input id= "searchButton" type="submit" value="Search" />
+				<button id='searching'>Searching <strong>. . .</strong></button>
 			</form>
 		</section>
 	</section>
   
   <section id="content">
-<!--
-		<div class="card" id="card-1"> 
+		<!--<div class="card" id="card-1"> 
 			<div class="front"> 
 				<div class= "topicId">Topic: </div>
 				<div class="cardContent"> 
@@ -349,10 +296,9 @@
 				<div class="cardContent">
 					<p><strong>A: </strong>answer</p>
 				</div>
-				<button class='editButton'>Edit</button>;
 			</div> 
-		</div>
--->
+	</div>-->
+		
   </section>
 </body>
 </html>
