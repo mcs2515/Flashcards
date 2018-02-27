@@ -4,18 +4,22 @@ var totalCards = $('.card:visible').length;
 var selectedCard = void 0;
 console.log("total cards start: " + totalCards);
 
-var handleResponse = function handleResponse(xhr) {
+var handleResponse = function handleResponse(xhr, parseResponse) {
 
 	var content = document.querySelector("#content");
 
 	switch (xhr.status) {
 		case 200:
 			//success in getting
-			displayCards(content, xhr);
+			if (parseResponse) {
+				displayCards(content, xhr);
+			}
 			break;
 		case 201:
 			//success in creating
-			createCard(content, xhr);
+			if (parseResponse) {
+				createCard(content, xhr);
+			}
 			break;
 		case 204:
 			//updated
@@ -27,8 +31,7 @@ var handleResponse = function handleResponse(xhr) {
 			//content.innerHTML = '<h1>Bad Request</h1>';
 			break;
 		case 404:
-			//bad request
-			//content.innerHTML = '<h1>Bad Request</h1>';
+			//not found
 			break;
 		default:
 			//content.innerHTML = `<h1>Resource Not Found</h1>`;
@@ -57,7 +60,11 @@ var addCard = function addCard(e, addForm) {
 	if (method == 'post') {
 		//set onload to parse request and get json message
 		xhr.onload = function () {
-			return handleResponse(xhr);
+			return handleResponse(xhr, true);
+		};
+	} else {
+		xhr.onload = function () {
+			return handleResponse(xhr, false);
 		};
 	}
 
@@ -106,7 +113,13 @@ var getCards = function getCards(e, searchForm) {
 	if (method == 'get') {
 		//set onload to parse request and get json message
 		xhr.onload = function () {
-			return handleResponse(xhr);
+			return handleResponse(xhr, true);
+		};
+	} else {
+		//set onload to check meta data and NOT message
+		//There are no body responses in a head request
+		xhr.onload = function () {
+			return handleResponse(xhr, false);
 		};
 	}
 
@@ -194,7 +207,7 @@ var requestEdit = function requestEdit() {
 	//			}
 	//		}
 	//	}
-	console.log("edit clicked woot");
+	console.log("edit clicked");
 };
 
 var createTemplate = function createTemplate(num, topic, question, answer) {

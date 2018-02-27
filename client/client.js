@@ -4,16 +4,20 @@ let totalCards = $('.card:visible').length;
 let selectedCard;
 console.log("total cards start: " + totalCards);
 
-const handleResponse = (xhr) => {
+const handleResponse = (xhr, parseResponse) => {
 
 	const content = document.querySelector(`#content`);
 	
 	switch(xhr.status){
 		case 200: //success in getting
-			displayCards(content,xhr);
+			if(parseResponse){
+				displayCards(content,xhr);
+			}
 			break;
 		case 201: //success in creating
-			createCard(content, xhr);
+			if(parseResponse){
+				createCard(content, xhr);
+			}
 			break;
 		case 204: //updated
 			//update the cards by simulating a click for the search button
@@ -22,8 +26,7 @@ const handleResponse = (xhr) => {
 		case 400: //bad request
 			//content.innerHTML = '<h1>Bad Request</h1>';
 			break;
-		case 404: //bad request
-			//content.innerHTML = '<h1>Bad Request</h1>';
+		case 404: //not found
 			break;
 		default:
 			//content.innerHTML = `<h1>Resource Not Found</h1>`;
@@ -51,8 +54,11 @@ const addCard = (e, addForm) =>{
 	//if get request or head request
 	if(method == 'post') {
 		//set onload to parse request and get json message
-		xhr.onload = () => handleResponse(xhr);
+		xhr.onload = () => handleResponse(xhr, true);
 	} 
+	else{
+		xhr.onload = () => handleResponse(xhr, false);
+	}
 
 	//build our x-www-form-urlencoded format
 	const formData = `topic=${topicField.value}&question=${questionField.value}&answer=${answerField.value}`;
@@ -98,7 +104,11 @@ const getCards = (e, searchForm) =>{
 	//if get request or head request
 	if(method == 'get') {
 		//set onload to parse request and get json message
-		xhr.onload = () => handleResponse(xhr);
+		xhr.onload = () => handleResponse(xhr, true);
+	} else {
+		//set onload to check meta data and NOT message
+		//There are no body responses in a head request
+		xhr.onload = () => handleResponse(xhr, false);
 	}
 
   xhr.send();
@@ -186,7 +196,7 @@ const requestEdit= () =>{
 //			}
 //		}
 //	}
-	console.log("edit clicked woot");
+	console.log("edit clicked");
 };
 
 const createTemplate = (num,topic, question, answer) =>{
