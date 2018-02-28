@@ -26,7 +26,7 @@ const handleResponse = (xhr, parseResponse) => {
 			status.innerText = "Card edited";
 			break;
 		case 400: //bad request
-			//content.innerHTML = '<h1>Bad Request</h1>';
+			status.innerText = "Status 400 - missing field(s) -";
 			break;
 		case 404: //not found
 			break;
@@ -205,15 +205,17 @@ const init = () => {
 	const answerField = document.querySelector('#answerField');	
 	
 	$("#searching").on('click', function(e){ 
+		$('#searching').stop(true);
 		$('#searching').fadeIn(1000);
 		$('#searching').fadeOut(2000);
 	});
 	
 	$("#status").on('click',function(e){ 
+		$('#status').stop(true);
 		$('#status').fadeIn(1000);
 		$('#status').fadeOut(2000);
 	});
-
+	
 	addForm.addEventListener('submit', (e) => {
 		addCard(e, addForm);
 		questionField.value=''; //empty out field

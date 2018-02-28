@@ -81,7 +81,7 @@ const addCards = (request, response, body) => {
 
 // function for 404 not found requests with message
 const notFound = (request, response) => {
-  const responseJSON = { message: 'The page you are looking for was not found.', id: 'notFound' };
+  const responseJSON = { message: 'The page you are looking for was not found.'};
   // Send 404 w/ message
   respondJSON(request, response, 404, responseJSON);
 };
