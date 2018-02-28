@@ -20,6 +20,10 @@
 		color:#fff;
 }
 
+.help-tip:hover{
+  cursor: pointer;
+}
+
 .help-tip:hover p{
 		display:block;
 		transform-origin: 100% 0%;
