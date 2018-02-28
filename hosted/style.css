@@ -205,3 +205,34 @@
 		select{
 			height: 2em;
 		}
+
+.arrow{
+
+			width: 60px;
+			height: 60px;
+			position: absolute;
+			left: 490px;
+			color: white;
+			font-size: 20pt;
+			background-color:cornflowerblue;
+			border-radius: 50%;
+			padding: 20px;
+			border: none;
+			z-index: 1;
+			font-family: 'Ubuntu', sans-serif;
+		}
+		
+.arrow:hover{
+	color: #89f9ea;
+	background-color: #4257b2;
+}
+
+
+#up{
+	top: 180px;
+}
+
+#down{
+	bottom: 60px;
+	transform: rotate(180deg);
+}
